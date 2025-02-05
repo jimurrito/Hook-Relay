@@ -40,7 +40,8 @@ defmodule HookRelay.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:toml, "~> 0.7.0"},
-      {:fs, "~> 8.6"}
+      {:fs, "~> 8.6"},
+      {:finch, "~> 0.13"}
     ]
   end
 

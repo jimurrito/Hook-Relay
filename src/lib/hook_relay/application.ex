@@ -11,6 +11,9 @@ defmodule HookRelay.Application do
     #
     #
     children = [
+      # Start finch http client works
+      {Finch, name: HookRelay.Finch},
+      #
       # Watcher gen server for config file
       HookRelay.ConfigWatcher,
       #

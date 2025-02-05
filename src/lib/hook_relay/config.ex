@@ -3,6 +3,8 @@ defmodule HookRelay.Config do
   Config tools for the relay server.
   """
 
+  require Logger
+
   @doc """
   Initializes state from config file
   """
@@ -10,6 +12,12 @@ defmodule HookRelay.Config do
   def initialize() do
     # Import config from file
     config = import_config()
+    # verbose
+    if Mix.env() == :dev do
+      Logger.debug("Pulled state from config file.")
+      IO.inspect(%{config_from_file: config})
+    end
+
     # Create ets for state
     :hook_relay = :ets.new(:hook_relay, [:set, :protected, :named_table])
     # Set state to ets
@@ -35,13 +43,25 @@ defmodule HookRelay.Config do
     {:ok}
   end
 
+  @doc """
+  Returns relay config if it exists.
+  No need to check prior, a result atom will be provided if it is not found.
+  """
+  @spec get_relay(binary()) :: map() | :not_found
+  def get_relay(relay) do
+    get_config()
+    |> Map.get(relay, :not_found)
+  end
+
   # Imports a config from a file - converts from TOML to struct
   @spec import_config() :: map()
   defp import_config() do
     filename = Application.get_env(:hook_relay, :config_path) <> "./relay.config"
+    Logger.debug("Importing from file: [#{filename}]")
+
     filename
     |> File.read!()
-    |> Toml.decode(filename: filename, keys: :atoms)
+    |> Toml.decode(filename: filename)
     |> case do
       {:ok, config} -> config
       e -> e

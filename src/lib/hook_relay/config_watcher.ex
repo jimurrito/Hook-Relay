@@ -4,6 +4,7 @@ defmodule HookRelay.ConfigWatcher do
   """
 
   use GenServer
+  require Logger
   alias HookRelay.Config, as: HConf
 
   @doc """
@@ -20,6 +21,7 @@ defmodule HookRelay.ConfigWatcher do
     {:ok} = HConf.initialize()
     # Start Filesystem listener
     {:ok, _pid} = :fs.start_link(FSConfigWatcher, Application.get_env(:hook_relay, :config_path))
+    Logger.debug("ConfigWatcher initialized!")
     # Subscribe to listener
     {:fs.subscribe(FSConfigWatcher), []}
   end
@@ -28,6 +30,7 @@ defmodule HookRelay.ConfigWatcher do
   @impl true
   def handle_info({_pid, {:fs, :file_event}, {_file, _action}}, _state) do
     {:ok} = HConf.reload_config()
+    Logger.info("Configuration change detected! Reloading config from file.")
     {:noreply, []}
   end
 end

@@ -5,8 +5,10 @@ defmodule HookRelayWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", HookRelayWeb do
+  scope "/", HookRelayWeb do
     pipe_through :api
+    post("/", CatchAndRelease, :error404)
+    post("/*_", CatchAndRelease, :catcher)
   end
 
   # Enable LiveDashboard in development
