@@ -15,7 +15,7 @@
 import Config
 
 config :hook_relay,
-  config_path: System.get_env("RELAY_CONFIG_PATH", "../"),
+  config_path: System.get_env("CONFIG_PATH"),
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint

@@ -1,18 +1,70 @@
-# HookRelay
+# Hook Relay
+Lite webhook request proxy. Allows apps to reduce their attack surface by using this service as a proxy just for WebHooks.
 
-To start your Phoenix server:
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+**Table of Contents**
+- [Hook Relay](#hook-relay)
+- [Features](#features)
+- [Deployment methods](#deployment-methods)
+  - [Docker](#docker)
+    - [Docker CLI](#docker-cli)
+    - [Docker Compose](#docker-compose)
+  - [Linux](#linux)
+  - [Windows](#windows)
+  - [Source](#source)
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+# Features
+- Blazingly fast!
+- Handles all requests in parallel for maximum throughput.
+- Native Live reloading - never need to restart the server for configuration changes!
+- TOML configuration files.
+- Optional async mode for request relaying.
+- Small compute foot print.
+- Highly scalable.
+- Supports vertical and horizontal scaling.
+- Multi-Architecture Support.
+- Supports Windows and Linux.
 
-## Learn more
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+# Deployment methods
+- Docker
+- Linux
+- Windows
+- Source
+
+## Docker
+The Alpine Linux based image was built to have the smallest footprint possible.
+
+### Docker CLI
+```bash
+docker run \
+  --name hook-relay \
+  -p 4000:4000 \
+  -v path/to/config/dir:/config \
+  jimurrito/hookrelay:latest
+```
+
+### Docker Compose
+```yaml
+services:
+  hook-relay:
+    image: jimurrito/hook-relay:latest
+    container_name: hook-relay
+    ports:
+      - 4000:4000
+    volumes:
+      - path/to/config/dir:/config
+    env_file: ".env"
+```
+
+
+
+
+## Linux
+
+
+## Windows
+
+
+## Source
