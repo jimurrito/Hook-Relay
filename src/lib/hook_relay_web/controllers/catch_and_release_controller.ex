@@ -42,10 +42,10 @@ defmodule HookRelayWeb.CatchAndRelease do
   end
 
   # relay caught msg
-  defp relay_msg(conn, target, relay_msg) do
+  defp relay_msg(conn, target, relay_msg, async) do
     # relay request
     # send request
-    Relay.relay(target, relay_msg)
+    Relay.relay(target, relay_msg, async)
     |> case do
       :failed ->
         "Request to the target '#{target}' failed! Check issue on the target side."
@@ -59,7 +59,14 @@ defmodule HookRelayWeb.CatchAndRelease do
         |> Logger.info()
 
         # :success
-        render(conn, :release, msg: %{result: :message_relayed})
+        render(conn, :release, msg: %{result: :relayed})
+
+      :async ->
+        "Async message relay to target '#{target}' was initiated."
+        |> Logger.info()
+
+        # :success
+        render(conn, :release, msg: %{result: :async_relayed})
     end
   end
 
@@ -80,12 +87,12 @@ defmodule HookRelayWeb.CatchAndRelease do
         error404(conn)
 
       # Endpoint does not require a proof_key
-      %{"proof_key" => "", "target" => target} ->
+      %{"proof_key" => "", "target" => target, "async" => async} ->
         Logger.debug("Request to endpoint '/#{path}' succeeded does not require proof_key check.")
-        relay_msg(conn, target, relay_msg)
+        relay_msg(conn, target, relay_msg, async)
 
       # Proof key required
-      %{"proof_key" => proof_key, "target" => target} ->
+      %{"proof_key" => proof_key, "target" => target, "async" => async} ->
         # Check for `proof_key` in the body
         relay_msg
         |> Map.get("proof_key")
@@ -93,7 +100,7 @@ defmodule HookRelayWeb.CatchAndRelease do
           # proof_key matches the one in the config
           ^proof_key ->
             Logger.debug("Request to endpoint '/#{path}' succeeded proof_key check.")
-            relay_msg(conn, target, relay_msg)
+            relay_msg(conn, target, relay_msg, async)
 
           # no proof_key parameter
           nil ->
