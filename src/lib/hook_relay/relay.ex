@@ -9,7 +9,12 @@ defmodule HookRelay.Relay do
   """
   @spec relay(binary(), any(), false) :: :ok | :failed
   def relay(target, relay_msg, false) do
-    Finch.build(:post, target, [], Jason.encode!(relay_msg))
+    Finch.build(
+      :post,
+      target,
+      [{"user-agent", "hook-relay/#{Mix.Project.config() |> Keyword.fetch!(:version)}"}],
+      Jason.encode!(relay_msg)
+    )
     |> Finch.request(HookRelay.Finch)
     |> case do
       {:ok, _resp} ->
