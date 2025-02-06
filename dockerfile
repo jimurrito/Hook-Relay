@@ -1,9 +1,9 @@
 FROM elixir:alpine
 #
+#
 ARG PORT=4000
 ENV PORT=${PORT}
 #
-ARG CONFIG_PATH=/config
 ENV CONFIG_PATH=${CONFIG_PATH}
 #
 ARG APP_ENV=prod
@@ -15,4 +15,13 @@ RUN apk add inotify-tools
 #
 #
 ADD src/ /app/
+ADD config/ /config/
 WORKDIR /app
+#
+#
+RUN mix deps.get
+RUN mix compile
+#
+#
+CMD ["mix", "hook-relay"]
+#
