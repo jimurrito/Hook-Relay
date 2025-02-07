@@ -3,7 +3,7 @@ Lite webhook request proxy. Allows apps to reduce their attack surface by using 
 
 Links:
 - [Github](https://github.com/jimurrito/hook-relay)
-- [Docker Hub]()
+- [Docker Hub](https://hub.docker.com/r/jimurrito/hook-relay)
 
 
 **Table of Contents**
@@ -37,16 +37,16 @@ Links:
 - Live reloading - <u>never restart the server for configuration changes!</u>
 - TOML configuration files.
 - Optional async mode for request relaying.
-- Small compute foot print.
+- Small container foot print (<85 MB in size!).
 - Highly scalable.
 - Supports vertical and horizontal scaling.
-- Multi-Architecture Support.
+- ~~Multi-Architecture Support~~. (Coming soon)
 - Supports Windows and Linux.
 
 
 
 # Docker
-The Alpine Linux based image was built to have the smallest footprint possible.
+The Alpine Linux based image was built to have the smallest footprint possible. (<85 MB in size!)
 
 
 ## CLI

@@ -58,7 +58,7 @@ defmodule HookRelay.Config do
   # Imports a config from a file - converts from TOML to struct
   @spec import_config() :: map()
   defp import_config() do
-    filename = Application.get_env(:hook_relay, :config_path) <> "./relay.config"
+    filename = Application.get_env(:hook_relay, :config_path) <> "/relay.config"
     Logger.debug("Importing from file: [#{filename}]")
 
     filename
@@ -75,7 +75,7 @@ defmodule HookRelay.Config do
   """
   @spec create_if_no_exist() :: :ok | {:error, any()}
   def create_if_no_exist do
-    file = Application.get_env(:hook_relay, :config_path) <> "./relay.config"
+    file = Application.get_env(:hook_relay, :config_path) <> "/relay.config"
 
     file
     |> File.stat()
@@ -97,7 +97,7 @@ defmodule HookRelay.Config do
   """
   @spec create_config() :: :ok | {:error, any()}
   def create_config() do
-    filename = Application.get_env(:hook_relay, :config_path) <> "./relay.config"
+    filename = Application.get_env(:hook_relay, :config_path) <> "/relay.config"
     Logger.debug("Generating a config file: #{filename}.")
     File.write(filename, default_config())
   end
